@@ -1,0 +1,32 @@
+#cloud-config
+hostname: ${hostname}
+manage_etc_hosts: true
+package_upgrade: true
+locale: en_GB.UTF-8
+users:
+  - name: pentester
+    gecos: Pen Test User
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    ssh_import_id: None
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ${ssh-pub-key-1}
+      - ${ssh-pub-key-2}
+write_files:
+  - path: /usr/local/bin/empire
+    permissions: '0755'
+    content: |
+      #!/usr/bin/env bash
+      empirecmd=`find /root/Downloads/Em* -name empire`
+      empiredir=`dirname $empirecmd`
+      cd $empiredir
+      ./empire
+
+bootcmd:
+  - |
+    cat>/usr/local/bin/pentest-cloudinit.sh<<EOF
+${bootstrap-tools}
+    EOF
+  - 'chmod 0755 /usr/local/bin/pentest-cloudinit.sh'
+  - '/usr/local/bin/pentest-cloudinit.sh >> /var/log/pentest-cloudinit.log 2>&1'
