@@ -1,5 +1,5 @@
 terraform {
-  required_version = "= 0.11.13"
+  required_version = "= 0.12.3"
 
   # Comment out when bootstrapping
   backend "s3" {
@@ -102,7 +102,7 @@ data "aws_ami" "vuln-tooling-kali-ami" {
 data "template_file" "kali_userdata" {
   template = "${file("cloudinit/kali-instance.yaml")}"
 
-  vars {
+  vars = {
     hostname        = "kali-pentest-01"
     ssh-pub-key-1   = "${local.ssh-pub-key-1}"
     ssh-pub-key-2   = "${local.ssh-pub-key-2}"
@@ -119,7 +119,7 @@ resource "aws_security_group" "kali-pentest-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${local.office-ips}"]
+    cidr_blocks = local.office-ips
   }
 
   egress {
