@@ -5,7 +5,6 @@
     apt-get update
     apt-get -y install gobuster
     apt-get -y install seclists
-    apt-get -y install burp
     pip install requests==2.5
     pip install urllib3==1.22
     cd /root/Downloads/
