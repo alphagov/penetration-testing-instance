@@ -1,7 +1,7 @@
 # Penetration Testing Instance  
 
 ## Kali Distribution  
-SOMETHING ABOUT THE KALI DISTRO HERE
+Kali is a Debian based distribution that is loaded with penetration testing tools.
 
 ## Penetration Testing Tooling  
 A list of the tooling that comes with the Kali distro and the extras that we have bundled.  
@@ -24,6 +24,8 @@ Within the AWS account you wish to deploy to.
 
 - Assume the role of the aws account you wish to deploy to at your cli.
 
+*Note that this has already been done for the security-testing aws account*
+
 ### Deploy with the below commands
 - git clone git@github.com:alphagov/penetration-testing-instance.git
 
@@ -34,8 +36,12 @@ If you are working as a pair also set ssh-pub-key-2.
 
 - terraform init; terraform plan
 
+*AWS Vault: aws-vault exec <profile> -- terraform init; terraform plan*
+
 - If the plan looks good then run:
 terraform apply
+
+- To obtain the public ip address run aws-vault exec <profile> -- aws ec2 describe-instances | grep 'GroupName\|PublicIp' 
 
 - Once the instance is up, to access use:
 ssh pentester@<public-ip-address>
