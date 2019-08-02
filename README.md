@@ -41,7 +41,7 @@ If you are working as a pair also set ssh-pub-key-2.
 - If the plan looks good then run:
 terraform apply
 
-- To obtain the punlic ip address run aws-vault exec <profile> -- aws ec2 describe-instances | grep 'GroupName\|PublicIp' 
+- To obtain the public ip address run aws-vault exec <profile> -- aws ec2 describe-instances | grep 'GroupName\|PublicIp' 
 
 - Once the instance is up, to access use:
 ssh pentester@<public-ip-address>
