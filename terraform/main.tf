@@ -5,12 +5,12 @@ terraform {
   backend "s3" {
     bucket = "security-vulnerability-state-bucket-01"
     key    = "vuln-tooling.tfstate"
-    region = "eu-west-2"
+    region = "eu-west-1"
   }
 }
 
 provider "aws" {
-  region = "eu-west-2"
+  region = "eu-west-1"
 }
 
 locals {
@@ -51,7 +51,7 @@ resource "aws_internet_gateway" "vuln-tooling-igw" {
 resource "aws_subnet" "vuln-tooling-subnet" {
   vpc_id     = "${aws_vpc.vuln-tooling.id}"
   cidr_block = "10.0.1.0/24"
-  availability_zone       = "eu-west-2a"
+  availability_zone       = "eu-west-1a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -145,7 +145,7 @@ resource "aws_instance" "kali-pentest" {
   vpc_security_group_ids = [
     "${aws_security_group.kali-pentest-sg.id}",
   ]
-  
+
   tags = {
     Name      = "Vulnerability Tooling Kali Pentest Instance"
     ManagedBy = "terraform"

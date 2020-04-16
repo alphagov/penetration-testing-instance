@@ -1,0 +1,9 @@
+[
+  {
+    "Description": "Pentest interview tech test VM v2",
+    "Format": "ova",
+    "UserBucket": {
+        "S3Bucket": "pentest-vm-interview",
+        "S3Key": "interviews/Os-hackNos-1.ova"
+    }
+}]
