@@ -14,12 +14,12 @@ provider "aws" {
 }
 
 locals {
-# Set your SSH public keys here for who you want to be able to access the instance
-# Remove the existing keys
+  # Set your SSH public keys here for who you want to be able to access the instance
+  # Remove the existing keys
   ssh-pub-key-1 = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQChXVB0+ZEc2KB1147WHGbhSUGyB2xeLnwJ4CW9V9hWdTgGWMuiWOcgFc1BGGbQ2I6Be939/JzqmsNOlguB0Qq5OJgcHelgB2+qAqEb1I9gYwKFFoIOIpiG5WNNKfbY+C2OjW6zCy9n0bNdXuSDzG2becfeCtSurdoVQNwt54AEXNtQAjUqPk+T4pHpMdWpDIMamDw8PY8PG3hypr6ao5vy/vBOaIKezAGIsDnr8eVIVkaV/TCE9RRQLxpN/tXCowzRbAmIko7so5iKoQOXSzHLMk/dehDk4oQg8pdRG7n/QW3NXFg1KbS3STgUb/8uigwAVRWCEd9LysDaceUISZ2JOP2f692f/z2rA1gCQiM5qJBOTGzL980PfcnTcKA8LI7A//S+UdWEONThQlpnZf+aFTaLHLvuBNO4awOoMorDkI7FMUvyGTHKJVHqebHwBoFMKghn9tzQ/GKK+o0zNgZ5nZaVGRRzRhxv/UueYVPPlRAf0w5GRPzx4vyOc7PE4M6amIDrIG8xojVFn8m3KwQumU78m297HzWtK3CSJSDrU1k2gpHdM/8AArRtYhIyPl7w/CaC+GrVMpG3I4r1HFzR92qQ66aUanoqr40CXwL+kbyZirt3u4km2c140/qX3UJQYcmObk43MjepFxuVmRIqCqjsfBFp4ZpIqOhQdsr37Q=="
   ssh-pub-key-2 = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDNNsdJTe3Z6n+Qa2i8bVAnT7Db/23tOCKnBmeSBtqkU1EyVL2ByV22qm6SqvOqPCokuXFeY+0llkDWps9K/ZOEAlhGIZ6iRZQVeuc4O37g1Jd5Pe+ITAorqhSXpEzefr2rbR4zfKqI2eQs1LxT+RRrx+e4JqTucGBqIxJofuz2Wka06dXzFtUYv/3wPs5KAdGnLGawnQRhE0LibeSP5ut2NJ0xTkbWBoBgyWMKrzR0+iyqFNR9RghcJLvcmFK/J6KpGrc+FcJQKbQGBkMyR6+Tfs9rwnoOW4JyIpM5XkkhXFrBxVckM1vR6Wt0cNJPlNBBngw9TytnIgijbyjixru3rJd2RU1yjvC5a1SMwhyfYaZAJlNCuJmNDTwKTXeoi5hi7nqmNP7EoywWz+y1Z6BHu02waclYvkMMozU7/Nn6j6EIltbghsNiFL4I2amQDcfRMjjhYqV7wzhPsGV4OSlOwvziEO9kbyl2nPJtYAMKQd5Ox8e8Y6Xu7qFnOJGLKLMr2FZm+xCh8IO5428YbziIqo8JUSQknFaTW+wQYPxbNys7oyeOd5OH8pkvzwyyQYEu83AiMcwzbqLwBdNxoQ0Q17pQw+jnFuPq4EgMrGupI8hwYRVzR9AkQtOABZ0hi9sSDT4VAxQvbcymnCed3MGMi4urnASOXWcHQXgfaxPK2w=="
   ssh-pub-key-3 = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQSE+tf9oN32B40RypJH8ov7A2K/V45F3R3DblhI8n7H1l/JnbJwsgYAmQMLGqcXlCbre8xZ5qEyR+vPVGF9/2vdnF1Fke3bNuyx8vpdFz+Kx3zDXJ7G20R2sNziVOFnRK93Go/pBtpxpWrrR9sI5vpdI4Cjp7sxFbo7/lL/fipBLA1H5ieUo7b0vVDM8cdNt7aTtc6FmSmjT2T1x4ILAuKptVU68JTLZoEE29RwdCZgkjPkZuaBHF78c3vQXbp8p4mA3gqGG9SYgSoPIGDBY1YQCkBiUm+m4JA+5LmRto9AAZjRff1NbQvEdzFojMuBF4bWTSasteLZwkkMdbP8XP cardno:000606445046"
-# The office-ips below are set to the GDS office egress ips, this local var is used to whitelist inbound ssh connections
+  # The office-ips below are set to the GDS office egress ips, this local var is used to whitelist inbound ssh connections
   office-ips = [
     "85.133.67.244/32",
     "213.86.153.212/32",
@@ -50,8 +50,8 @@ resource "aws_internet_gateway" "vuln-tooling-igw" {
 }
 
 resource "aws_subnet" "vuln-tooling-subnet" {
-  vpc_id     = "${aws_vpc.vuln-tooling.id}"
-  cidr_block = "10.0.1.0/24"
+  vpc_id                  = "${aws_vpc.vuln-tooling.id}"
+  cidr_block              = "10.0.1.0/24"
   availability_zone       = "eu-west-2a"
   map_public_ip_on_launch = true
 
@@ -65,7 +65,7 @@ resource "aws_route_table" "vuln-tooling-route-table" {
   vpc_id = "${aws_vpc.vuln-tooling.id}"
 
   route {
-    cidr_block        = "0.0.0.0/0"
+    cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.vuln-tooling-igw.id}"
   }
 
@@ -105,7 +105,7 @@ data "template_file" "kali_userdata" {
 
   vars = {
     hostname        = "kali-pentest-01"
-    ssh-keys  = ["${local.ssh-pub-key-1}", "${local.ssh-pub-key-2}", "${local.ssh-pub-key-3}"]
+    ssh-keys        = ["${local.ssh-pub-key-1}", "${local.ssh-pub-key-2}", "${local.ssh-pub-key-3}"]
     bootstrap-tools = "${file("cloudinit/bootstrap-tools.sh.tpl")}"
   }
 }
@@ -123,9 +123,9 @@ resource "aws_security_group" "kali-pentest-sg" {
   }
 
   egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = -1
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
 
