@@ -11,9 +11,9 @@ users:
     ssh_import_id: None
     lock_passwd: true
     ssh_authorized_keys:
-      - ${ssh-pub-key-1}
-      - ${ssh-pub-key-2}
-      - ${ssh-pub-key-3}
+    %{ for key in ssh-keys ~}
+      - ${key}
+    %{ endfor ~}
 write_files:
   - path: /usr/local/bin/empire
     permissions: '0755'
