@@ -41,7 +41,7 @@ resource "aws_vpc" "vuln-tooling" {
 }
 
 resource "aws_internet_gateway" "vuln-tooling-igw" {
-  vpc_id = "${aws_vpc.vuln-tooling.id}"
+  vpc_id = aws_vpc.vuln-tooling.id
 
   tags = {
     Name      = "Vulnerability Tooling Internet Gateway"
@@ -50,7 +50,7 @@ resource "aws_internet_gateway" "vuln-tooling-igw" {
 }
 
 resource "aws_subnet" "vuln-tooling-subnet" {
-  vpc_id                  = "${aws_vpc.vuln-tooling.id}"
+  vpc_id                  = aws_vpc.vuln-tooling.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = "eu-west-2a"
   map_public_ip_on_launch = true
@@ -62,11 +62,11 @@ resource "aws_subnet" "vuln-tooling-subnet" {
 }
 
 resource "aws_route_table" "vuln-tooling-route-table" {
-  vpc_id = "${aws_vpc.vuln-tooling.id}"
+  vpc_id = aws_vpc.vuln-tooling.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.vuln-tooling-igw.id}"
+    gateway_id = aws_internet_gateway.vuln-tooling-igw.id
   }
 
   tags = {
@@ -76,8 +76,8 @@ resource "aws_route_table" "vuln-tooling-route-table" {
 }
 
 resource "aws_route_table_association" "vuln-tooling-association" {
-  subnet_id      = "${aws_subnet.vuln-tooling-subnet.id}"
-  route_table_id = "${aws_route_table.vuln-tooling-route-table.id}"
+  subnet_id      = aws_subnet.vuln-tooling-subnet.id
+  route_table_id = aws_route_table.vuln-tooling-route-table.id
 }
 
 data "aws_ami" "vuln-tooling-kali-ami" {
@@ -100,20 +100,10 @@ data "aws_ami" "vuln-tooling-kali-ami" {
   }
 }
 
-data "template_file" "kali_userdata" {
-  template = "${file("cloudinit/kali-instance.yaml")}"
-
-  vars = {
-    hostname        = "kali-pentest-01"
-    ssh-keys        = ["${local.ssh-pub-key-1}", "${local.ssh-pub-key-2}", "${local.ssh-pub-key-3}"]
-    bootstrap-tools = "${file("cloudinit/bootstrap-tools.sh.tpl")}"
-  }
-}
-
 resource "aws_security_group" "kali-pentest-sg" {
   name        = "kali-pentest-sg"
   description = "Kali PenTest Instance Security Group"
-  vpc_id      = "${aws_vpc.vuln-tooling.id}"
+  vpc_id      = aws_vpc.vuln-tooling.id
 
   ingress {
     from_port   = 22
@@ -136,14 +126,23 @@ resource "aws_security_group" "kali-pentest-sg" {
 }
 
 resource "aws_instance" "kali-pentest" {
-  ami           = "${data.aws_ami.vuln-tooling-kali-ami.id}"
+  ami           = data.aws_ami.vuln-tooling-kali-ami.id
   instance_type = "t2.medium"
-  user_data     = "${data.template_file.kali_userdata.rendered}"
-  monitoring    = "true"
-  subnet_id     = "${aws_subnet.vuln-tooling-subnet.id}"
+
+  user_data = templatefile(
+    "${path.module}/cloudinit/kali-instance.yaml",
+    {
+      hostname        = "kali-pentest-01"
+      ssh-keys        = [local.ssh-pub-key-1, local.ssh-pub-key-2, local.ssh-pub-key-3]
+      bootstrap-tools = "${file("cloudinit/bootstrap-tools.sh.tpl")}"
+    }
+  )
+
+  monitoring = "true"
+  subnet_id  = aws_subnet.vuln-tooling-subnet.id
 
   vpc_security_group_ids = [
-    "${aws_security_group.kali-pentest-sg.id}",
+    aws_security_group.kali-pentest-sg.id,
   ]
 
   tags = {
