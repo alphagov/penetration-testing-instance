@@ -24,27 +24,29 @@ Within the AWS account you wish to deploy to.
 
 - Assume the role of the aws account you wish to deploy to at your cli.
 
-*Note that this has already been done for the security-testing aws account*
+*Note that this has already been done for the `security-vuln-testing` aws account*
 
 ### Deploy with the below commands
-- git clone git@github.com:alphagov/penetration-testing-instance.git
 
-- cd penetration-testing-instance/terraform
+- Ensure you are using terraform `0.12.3`
 
-- edit main.tf and place in your public ssh-key at ssh-pub-key-1.  
-If you are working as a pair also set ssh-pub-key-2.
+- `git clone git@github.com:alphagov/penetration-testing-instance.git`
 
-- terraform init; terraform plan
+- `cd penetration-testing-instance/terraform`
 
-*AWS Vault: aws-vault exec <profile> -- terraform init; terraform plan*
+- edit main.tf and place in your public ssh-key at ssh-pub-key-{number}.  
+
+- `terraform init; terraform plan`
+
+*AWS Vault: `aws-vault exec <profile> -- terraform init; terraform plan`*
 
 - If the plan looks good then run:
-terraform apply
+`terraform apply`
 
-- To obtain the public ip address run aws-vault exec <profile> -- aws ec2 describe-instances | grep 'GroupName\|PublicIp' 
+- To obtain the public ip address run `aws-vault exec <profile> -- aws ec2 describe-instances --region eu-west-2`
 
 - Once the instance is up, to access use:
-ssh pentester@<public-ip-address>
+`ssh pentester@<public-ip-address>`
 
 ## Cheatsheet to get started on some of the tooling
 CHEATSHEET FOR TOOLING
