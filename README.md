@@ -43,7 +43,7 @@ Within the AWS account you wish to deploy to.
 - If the plan looks good then run:
 `terraform apply`
 
-- To obtain the public ip address run `aws-vault exec <profile> -- aws ec2 describe-instances --region eu-west-2`
+- The public IP will be output by TF
 
 - Once the instance is up, to access use:
 `ssh pentester@<public-ip-address>`

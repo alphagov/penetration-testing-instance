@@ -153,3 +153,7 @@ resource "aws_instance" "kali-pentest" {
     ManagedBy = "terraform"
   }
 }
+
+output "instance_ip_addr" {
+  value = aws_instance.kali-pentest.public_ip
+}
