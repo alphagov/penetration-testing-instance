@@ -105,8 +105,7 @@ data "template_file" "kali_userdata" {
 
   vars = {
     hostname        = "kali-pentest-01"
-    ssh-pub-key-1   = "${local.ssh-pub-key-1}"
-    ssh-pub-key-2   = "${local.ssh-pub-key-2}"
+    ssh-keys  = ["${local.ssh-pub-key-1}", "${local.ssh-pub-key-2}", "${local.ssh-pub-key-3}"]
     ssh-pub-key-3   = "${local.ssh-pub-key-3}"
     bootstrap-tools = "${file("cloudinit/bootstrap-tools.sh.tpl")}"
   }
