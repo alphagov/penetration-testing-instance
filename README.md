@@ -20,33 +20,39 @@ A list of the tooling that comes with the Kali distro and the extras that we hav
 ### Pre-requisite:
 Within the AWS account you wish to deploy to.
 
+- Ensure you have installed and configured aws-vault. More info: https://github.com/99designs/aws-vault
+
 - Go to AWS Marketplace search for Kali and open a subscription.
-
-- Assume the role of the aws account you wish to deploy to at your cli.
-
-*Note that this has already been done for the `security-vuln-testing` aws account*
-
-### Deploy with the below commands
 
 - Ensure you are using terraform `0.12.3`
 
-- `git clone git@github.com:alphagov/penetration-testing-instance.git`
+- Assume the role of the aws account you wish to deploy to at your cli. If this is your first time, you will need to create an access key on the `gds-users` account to be able to assume role programatically. See aws doc: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey
+
+*Note that this has already been done for the `security-vuln-testing` aws account. If you are using another aws account, ensure you change line 6 on https://github.com/alphagov/penetration-testing-instance/blob/readme-update/terraform/main.tf to replace the s3 bucket name. Create the bucket manually before running the terraform template.*
+
+### Deploy with the below commands
+
+- Clone this GitHub repository:
+`git clone git@github.com:alphagov/penetration-testing-instance.git`
 
 - `cd penetration-testing-instance/terraform`
 
-- edit main.tf and place in your public ssh-key at ssh-pub-key-{number}.  
+- edit main.tf and place in your public ssh-key at ssh-pub-key-{number}. Note for MAC users: run `ssh-add -L` to get your public key.   
 
 - `terraform init; terraform plan`
 
 *AWS Vault: `aws-vault exec <profile> -- terraform init; terraform plan`*
 
 - If the plan looks good then run:
-`terraform apply`
+`aws-vault exec <profile> -- terraform apply`
 
 - The public IP will be output by TF
 
 - Once the instance is up, to access use:
 `ssh pentester@<public-ip-address>`
+
+- Once you have finihed with the Kali instance, destroy it:
+`aws-vault exec <profile> -- terraform destroy`
 
 ## Cheatsheet to get started on some of the tooling
 CHEATSHEET FOR TOOLING
