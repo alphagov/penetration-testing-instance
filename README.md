@@ -54,6 +54,18 @@ Within the AWS account you wish to deploy to.
 - Once you have finihed with the Kali instance, destroy it:
 `aws-vault exec <profile> -- terraform destroy`
 
+## How to set up GUI on EC2 Kali Linux instance
+
+### Pre-requisite:
+- Install VNC Viewer in you MAC: https://www.realvnc.com/en/connect/download/viewer/macos/
+- Use OS Kali Linux VERSION="2020.1". To see the version, run `cat /etc/os-release`
+
+### Run the following commands:
+- Set up a password for the VNC server in the EC2 Kali Linux instance. Run: `tightvncpasswd` and then `exit` the ssh session.
+- Re-connect again to the Kali instance via SSH: `ssh -L 5901:localhost:5901 pentester@<public-ip-address>`
+- Start the VNC server in Kali `vncserver`
+- On your MAC, execute the VNC viewer software and type `localhost:1` in the search bar. This will prompt the password that was set up previosuly to access the VNC server.
+
 ## Cheatsheet to get started on some of the tooling
 CHEATSHEET FOR TOOLING
 
