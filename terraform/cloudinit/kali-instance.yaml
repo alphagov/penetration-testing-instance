@@ -10,10 +10,12 @@ users:
     groups: users, admin
     ssh_import_id: None
     lock_passwd: true
+    shell: /bin/bash
     ssh_authorized_keys:
     %{ for key in ssh-keys ~}
       - ${key}
     %{ endfor ~}
+    
 write_files:
   - path: /usr/local/bin/empire
     permissions: '0755'
