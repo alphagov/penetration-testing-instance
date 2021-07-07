@@ -10,10 +10,12 @@ users:
     groups: users, admin
     ssh_import_id: None
     lock_passwd: true
+    shell: /bin/bash
     ssh_authorized_keys:
     %{ for key in ssh-keys ~}
       - ${key}
     %{ endfor ~}
+    
 write_files:
   - path: /usr/local/bin/empire
     permissions: '0755'
@@ -23,6 +25,17 @@ write_files:
       empiredir=`dirname $empirecmd`
       cd $empiredir
       ./empire
+  - path: /usr/local/bin/update-kali
+    permissions: '0755'
+    content: |
+      #!/bin/sh
+      apt-get update -y && apt-get upgrade -y && apt-get dist-upgrade -y
+      apt-get autoclean -y && apt-get clean -y
+      apt-get autoremove
+  - path: /etc/crontab
+    content: |
+      0 7 * * * /usr/local/bin/update-kali
+    append: true
 
 bootcmd:
   - |
